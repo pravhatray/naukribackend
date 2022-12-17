@@ -31,8 +31,8 @@ app.get("/filterRole", async (req, res) => {
   }
 });
 
-app.get("/sort", async (req, res) => {
- const {type} =req.body;
+app.get("/sort/:type", async (req, res) => {
+ const {type} =req.params;
 
  try{
   if(type==="dec")
@@ -40,7 +40,7 @@ app.get("/sort", async (req, res) => {
     let updated=await JobPost.find().sort({createdAt:-1});
     res.send(updated)
   }
-  else{
+  else if(type==="inc"){
     let updated=await JobPost.find().sort({createdAt:1});
     res.send(updated)
   }
