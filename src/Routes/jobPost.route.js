@@ -31,6 +31,26 @@ app.get("/filterRole", async (req, res) => {
   }
 });
 
+app.get("/sort", async (req, res) => {
+ const {type} =req.body;
+
+ try{
+  if(type==="dec")
+  {
+    let updated=await JobPost.find().sort({createdAt:-1});
+    res.send(updated)
+  }
+  else{
+    let updated=await JobPost.find().sort({createdAt:1});
+    res.send(updated)
+  }
+ }catch(er){
+  res.status(404).send(er.message)
+ }
+ 
+  
+});
+
 app.get("/", async (req, res) => {
   let jobpost = await JobPost.find();
   res.send(jobpost);
