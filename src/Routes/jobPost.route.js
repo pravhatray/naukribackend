@@ -8,15 +8,26 @@ app.get("/search", async (req, res) => {
   if (req.query.q) {
     keyword = req.query.q;
   }
-  console.log(keyword);
+  
   try {
-    const AllPost = await Post.find({
+    const Post = await JobPost.find({
       language: { $regex: keyword, $options: "i" },
     });
-    console.log(AllPost);
-    return res.status(200).send(AllPost);
+    console.log(Post);
+    return res.status(200).send(Post);
   } catch (er) {
     return res.status(403).send(er.message);
+  }
+});
+
+app.get("/filterRole", async (req, res) => {
+  const { q } = req.query;
+  console.log(q);
+  try {
+    const filterrole = await JobPost.find({ role: q });
+    res.status(200).send(filterrole);
+  } catch (er) {
+    return res.status(404).send({ msg: er.message });
   }
 });
 
