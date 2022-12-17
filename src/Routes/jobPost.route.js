@@ -53,7 +53,7 @@ app.get("/sort/:type", async (req, res) => {
 
 
 app.get("/", async (req, res) => {
-  const { page = 1, limit = 1} = req.query;
+  const { page = 1, limit = 10} = req.query;
   try {
     const alljobPost = await JobPost.find();
     const jobpost = await JobPost.find()
