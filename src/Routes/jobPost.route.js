@@ -3,31 +3,22 @@ const JobPost = require("../Models/jobPost.model");
 
 const app = express.Router();
 
-// const Authmiddleware = async (req, res, next) => {
-//   let token = req.headers.token;
-//   if (token) {
-//     let [id, email, password] = token.split(":");
-//     let user = await User.findById(id);
-
-//     if (user.email === email && user.password === password) {
-//       next();
-//     } else {
-//       res.status(401).send("User is not authenticated check Credintials");
-//     }
-//   } else {
-//     res.status(401).send("User is not authenticated check Credintials");
-//   }
-// };
-
-// app.get("/:id", Authmiddleware, async (req, res) => {
-//   try {
-//     let id = req.params.id;
-//     let profile = await User.findById(id);
-//     res.status(200).send(profile);
-//   } catch (e) {
-//     res.status(401).send(e.message);
-//   }
-// });
+app.get("/search", async (req, res) => {
+  let keyword = {};
+  if (req.query.q) {
+    keyword = req.query.q;
+  }
+  console.log(keyword);
+  try {
+    const AllPost = await Post.find({
+      language: { $regex: keyword, $options: "i" },
+    });
+    console.log(AllPost);
+    return res.status(200).send(AllPost);
+  } catch (er) {
+    return res.status(403).send(er.message);
+  }
+});
 
 app.get("/", async (req, res) => {
   let jobpost = await JobPost.find();
