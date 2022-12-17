@@ -51,21 +51,28 @@ app.get("/sort/:type", async (req, res) => {
   
 });
 
+
+app.get("/", async (req, res) => {
+  const { page = 1, limit = 3} = req.query;
+  try {
+    const alljobPost = await JobPost.find();
+    const jobpost = await JobPost.find()
+     
+      .skip((page - 1) * limit)
+      .limit(limit);
+    
+    res.status(200).send({ jobpost, total: alljobPost });
+  } catch (er) {
+    return res.status(404).send({ msg: er.message });
+  }
+});
+
 app.get("/", async (req, res) => {
   let jobpost = await JobPost.find();
   res.send(jobpost);
 });
 
-app.get("/",async(req,res)=>{
 
-  let {page=1,limit=10}=req.query
-  try{
-      let jobpost=await JobPost.find().skip((page-1)*limit).limit(limit)
-      res.send(jobpost)
-  }catch(e){
-      res.status(500).send(e.message)
-  }
-})
 
 app.post("/addjob", async (req, res) => {
   let { company,
